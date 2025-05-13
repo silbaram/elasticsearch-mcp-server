@@ -1,0 +1,21 @@
+elasticsearch:
+  version: "8.6.1"
+  search:
+    hosts:
+      - http://localhost:9200
+#      - http://10.55.2.197:9200
+
+spring:
+  main:
+    banner-mode: off
+  include:
+    - elasticsearch
+  ai:
+    mcp:
+      server:
+        name: elasticsearch-mcp-server
+        stdio: true
+#        type: ASYNC
+        resource-change-notification: false
+        prompt-change-notification: false
+        tool-change-notification: false

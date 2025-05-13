@@ -1,0 +1,13 @@
+<configuration>
+    <!-- 콘솔에 찍히는 로그를 WARN 이상으로 제한 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger — %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 원하지 않는 로거가 DEBUG/INFO로 찍히는 걸 막음 -->
+    <root level="WARN">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
