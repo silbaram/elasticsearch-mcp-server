@@ -13,6 +13,4 @@ rootProject.name = "elasticsearch-mcp-server"
 include("mcp-server")
 
 include("infrastructures")
-
-include("infrastructures:elasticsearch-8.18.1")
-include("infrastructures:elasticsearch-8.6.1")
+include("infrastructures:elasticsearch")

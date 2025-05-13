@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <property name="CONSOLE_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) [${java.rmi.server.hostname:-127.0.0.1}] [${nd.hostname:-localhost}] %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr([%class{5} > %method:%line]){magenta} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <property name="FILE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} [%class{5} > %method:%line] : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <property name="LOG_PATH" value="./logs"/>
+    <property name="LOG_FILE" value="mcp-server"/>
+
+    <appender name="FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_FILE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/old/${LOG_FILE}-%d{yyyyMMdd}.%i.log.gz</fileNamePattern>
+            <maxHistory>5</maxHistory>
+            <maxFileSize>300MB</maxFileSize>
+            <totalSizeCap>300MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_ERROR_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_FILE}-error.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/old/${LOG_FILE}-error-%d{yyyyMMdd}.%i.log.gz</fileNamePattern>
+            <maxHistory>10</maxHistory>
+            <maxFileSize>300MB</maxFileSize>
+            <totalSizeCap>300MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 로그 레벨 설정 -->
+    <logger name="org.springframework" level="INFO" />
+    <logger name="com.silbaram.github.mcp.server" level="DEBUG" />
+
+    <!-- 정의 되지 않은 logger 들에게 일괄 적용됨 -->
+    <root level="INFO">
+        <appender-ref ref="FILE_APPENDER" />
+        <appender-ref ref="FILE_ERROR_APPENDER" />
+    </root>
+
+</configuration>

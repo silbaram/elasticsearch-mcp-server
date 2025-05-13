@@ -1,5 +1,0 @@
-#elasticsearch:
-#  search:
-#    hosts:
-#      - http://localhost:9200
-##      - http://10.55.2.197:9200

@@ -1,22 +1,29 @@
 package com.silbaram.github.mcp.server.elasticsearch.tools.config;
 
-import com.silbaram.github.mcp.server.elasticsearch.tools.MappingsToolService;
+import com.silbaram.github.mcp.server.elasticsearch.tools.ClusterToolsService;
+import com.silbaram.github.mcp.server.elasticsearch.tools.MappingsToolsService;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+import java.util.Arrays;
+
+@Configuration
 public class ToolConfig {
 
-    private final MappingsToolService mappingsToolService;
+    private final MappingsToolsService mappingsToolsService;
+    private final ClusterToolsService clusterToolsService;
 
-    public ToolConfig(MappingsToolService mappingsToolService) {
-        this.mappingsToolService = mappingsToolService;
+    public ToolConfig(MappingsToolsService mappingsToolsService, ClusterToolsService clusterToolsService) {
+        this.mappingsToolsService = mappingsToolsService;
+        this.clusterToolsService = clusterToolsService;
     }
 
     @Bean
     public ToolCallbackProvider elasticSearchTools() {
-        return MethodToolCallbackProvider.builder().toolObjects(mappingsToolService).build();
+        return MethodToolCallbackProvider.builder()
+                .toolObjects(mappingsToolsService, clusterToolsService)
+                .build();
     }
 }
