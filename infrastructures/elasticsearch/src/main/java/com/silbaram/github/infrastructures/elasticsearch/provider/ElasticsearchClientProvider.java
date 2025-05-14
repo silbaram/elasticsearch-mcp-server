@@ -1,6 +1,8 @@
 package com.silbaram.github.infrastructures.elasticsearch.provider;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.cluster.HealthRequest;
+import co.elastic.clients.elasticsearch.cluster.HealthResponse;
 import co.elastic.clients.elasticsearch.indices.GetMappingResponse;
 import com.silbaram.github.infrastructures.elasticsearch.properties.ElasticsearchProperties;
 import org.slf4j.Logger;
@@ -33,12 +35,12 @@ public class ElasticsearchClientProvider {
     }
 
     public Map<String, String> getClusterHealth() throws IOException {
-        var status = elasticsearchMcpClient
-            .cluster()
-            .health()
-            .status()
-            .jsonValue();
 
-        return Collections.singletonMap("status", status);
+        // Create a HealthRequest
+        HealthRequest healthRequest = new HealthRequest.Builder().build();
+        // Fetch the cluster health
+        HealthResponse response = elasticsearchMcpClient.cluster().health(healthRequest);
+
+        return Collections.singletonMap("status", response.status().jsonValue());
     }
 }

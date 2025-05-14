@@ -12,18 +12,18 @@ import java.util.Arrays;
 @Configuration
 public class ToolConfig {
 
-    private final MappingsToolsService mappingsToolsService;
     private final ClusterToolsService clusterToolsService;
+    private final MappingsToolsService mappingsToolsService;
 
-    public ToolConfig(MappingsToolsService mappingsToolsService, ClusterToolsService clusterToolsService) {
-        this.mappingsToolsService = mappingsToolsService;
+    public ToolConfig(ClusterToolsService clusterToolsService, MappingsToolsService mappingsToolsService) {
         this.clusterToolsService = clusterToolsService;
+        this.mappingsToolsService = mappingsToolsService;
     }
 
     @Bean
     public ToolCallbackProvider elasticSearchTools() {
         return MethodToolCallbackProvider.builder()
-                .toolObjects(mappingsToolsService, clusterToolsService)
+                .toolObjects(clusterToolsService, mappingsToolsService)
                 .build();
     }
 }
