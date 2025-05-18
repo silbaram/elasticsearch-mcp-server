@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.Map;
 
 @Service
-public class ClusterToolsService {
+public class ClusterHealthToolsService {
 
     private final ElasticsearchHealthProvider elasticsearchHealthProvider;
 
-    public ClusterToolsService(ElasticsearchHealthProvider elasticsearchHealthProvider) {
+    public ClusterHealthToolsService(ElasticsearchHealthProvider elasticsearchHealthProvider) {
         this.elasticsearchHealthProvider = elasticsearchHealthProvider;
     }
 
