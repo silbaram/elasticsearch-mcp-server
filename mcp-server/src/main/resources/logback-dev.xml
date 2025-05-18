@@ -6,7 +6,7 @@
     <property name="CONSOLE_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) [${java.rmi.server.hostname:-127.0.0.1}] [${nd.hostname:-localhost}] %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr([%class{5} > %method:%line]){magenta} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
     <property name="FILE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} [%class{5} > %method:%line] : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
 
-    <property name="LOG_PATH" value="./logs"/>
+    <property name="LOG_PATH" value="../logs"/>
     <property name="LOG_FILE" value="mcp-server"/>
 
     <appender name="FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">

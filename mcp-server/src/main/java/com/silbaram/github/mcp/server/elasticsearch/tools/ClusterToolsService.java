@@ -1,6 +1,6 @@
 package com.silbaram.github.mcp.server.elasticsearch.tools;
 
-import com.silbaram.github.infrastructures.elasticsearch.provider.ElasticsearchClientProvider;
+import com.silbaram.github.infrastructures.elasticsearch.provider.ElasticsearchHealthProvider;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +10,10 @@ import java.util.Map;
 @Service
 public class ClusterToolsService {
 
-    private final ElasticsearchClientProvider elasticsearchClientProvider;
+    private final ElasticsearchHealthProvider elasticsearchHealthProvider;
 
-    public ClusterToolsService(ElasticsearchClientProvider elasticsearchClientProvider) {
-        this.elasticsearchClientProvider = elasticsearchClientProvider;
+    public ClusterToolsService(ElasticsearchHealthProvider elasticsearchHealthProvider) {
+        this.elasticsearchHealthProvider = elasticsearchHealthProvider;
     }
 
 
@@ -23,14 +23,9 @@ public class ClusterToolsService {
     )
     public Map<String, String> getClusterHealth() {
         try {
-            return elasticsearchClientProvider.getClusterHealth();
+            return elasticsearchHealthProvider.getClusterHealth();
         } catch (IOException e) {
             return Map.of("Error", e.getMessage());
         }
     }
-
-//    @Tool(description = "Returns high-level overview of cluster statistics.")
-//    public Map<String, Object> getClusterStats() {
-//        return elasticsearchClientProvider.getClusterStats();
-//    }
 }
