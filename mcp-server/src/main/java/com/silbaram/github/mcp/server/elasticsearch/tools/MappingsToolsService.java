@@ -1,7 +1,7 @@
 package com.silbaram.github.mcp.server.elasticsearch.tools;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.silbaram.github.infrastructures.elasticsearch.provider.ElasticsearchClientProvider;
+import com.silbaram.github.infrastructures.elasticsearch.provider.ElasticsearchMappingsProvider;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Service;
@@ -12,11 +12,11 @@ import java.util.List;
 @Service
 public class MappingsToolsService {
 
-    private final ElasticsearchClientProvider elasticsearchClientProvider;
+    private final ElasticsearchMappingsProvider elasticsearchMappingsProvider;
     private final ObjectMapper objectMapper;
 
-    public MappingsToolsService(ElasticsearchClientProvider elasticsearchClientProvider, ObjectMapper objectMapper) {
-        this.elasticsearchClientProvider = elasticsearchClientProvider;
+    public MappingsToolsService(ElasticsearchMappingsProvider elasticsearchMappingsProvider, ObjectMapper objectMapper) {
+        this.elasticsearchMappingsProvider = elasticsearchMappingsProvider;
         this.objectMapper = objectMapper;
     }
 
@@ -29,7 +29,7 @@ public class MappingsToolsService {
         String index
     ) {
         try {
-            Object mappingObj = elasticsearchClientProvider.getMappings(index);
+            Object mappingObj = elasticsearchMappingsProvider.getMappings(index);
 
             String prettyJson = objectMapper
                     .writerWithDefaultPrettyPrinter()
