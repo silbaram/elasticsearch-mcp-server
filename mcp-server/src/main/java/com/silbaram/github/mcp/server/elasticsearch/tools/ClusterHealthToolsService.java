@@ -25,7 +25,7 @@ public class ClusterHealthToolsService {
         try {
             return elasticsearchHealthProvider.getClusterHealth();
         } catch (IOException e) {
-            return Map.of("Error", e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

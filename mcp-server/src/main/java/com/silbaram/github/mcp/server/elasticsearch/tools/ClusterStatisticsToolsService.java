@@ -17,14 +17,14 @@ public class ClusterStatisticsToolsService {
     }
 
     @Tool(
-            name = "get_cluster_statistics",
-            description = "Returns comprehensive cluster statistics including cluster name, UUID, health status, node roles, OS and JVM resource usage, index counts, and shard metrics."
+        name = "get_cluster_statistics",
+        description = "Returns comprehensive cluster statistics including cluster name, UUID, health status, node roles, OS and JVM resource usage, index counts, and shard metrics."
     )
     public Map<String, Object> getClusterStatistics() {
         try {
             return elasticsearchClusterStatisticsProvider.getClusterStatistics();
         } catch (IOException e) {
-            return Map.of("Error", e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
