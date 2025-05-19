@@ -2,22 +2,19 @@ package com.silbaram.github.infrastructures.elasticsearch.provider;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.DocStats;
-import co.elastic.clients.elasticsearch._types.StoreStats;
 import co.elastic.clients.elasticsearch.cluster.ClusterStatsRequest;
 import co.elastic.clients.elasticsearch.cluster.ClusterStatsResponse;
 import co.elastic.clients.elasticsearch.cluster.stats.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Component
 public class ElasticsearchClusterStatisticsProvider {
 
-    private static final Logger log = LoggerFactory.getLogger(ElasticsearchClusterStatisticsProvider.class);
     private final ElasticsearchClient elasticsearchMcpClient;
 
     public ElasticsearchClusterStatisticsProvider(ElasticsearchClient elasticsearchMcpClient) {
@@ -63,7 +60,6 @@ public class ElasticsearchClusterStatisticsProvider {
         ClusterIndices indices = response.indices();
         Map<String, Object> indicesInfo = new HashMap<>();
         indicesInfo.put("count", indices.count());
-        result.put("indices", indicesInfo);
 
         // 샤드
         ClusterIndicesShards shards = indices.shards();
@@ -80,11 +76,7 @@ public class ElasticsearchClusterStatisticsProvider {
         docsInfo.put("deleted", docs.deleted());
         indicesInfo.put("docs", docsInfo);
 
-        // 스토어 크기
-        StoreStats store = indices.store();
-        log.info("store : {}", store);
-        log.info("store_bytes : {}", store.sizeInBytes());
-        indicesInfo.put("store_bytes", Long.valueOf(store.sizeInBytes()));
+        result.put("indices", indicesInfo);
 
         return result;
     }
