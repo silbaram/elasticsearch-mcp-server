@@ -2,7 +2,6 @@ package com.silbaram.github.infrastructures.elasticsearch.provider;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.DocStats;
-import co.elastic.clients.elasticsearch.cluster.ClusterStatsRequest;
 import co.elastic.clients.elasticsearch.cluster.ClusterStatsResponse;
 import co.elastic.clients.elasticsearch.cluster.stats.*;
 import org.springframework.stereotype.Component;
@@ -21,9 +20,11 @@ public class ElasticsearchClusterStatisticsProvider {
         this.elasticsearchMcpClient = elasticsearchMcpClient;
     }
 
+    /**
+     * elasticsearch _cluster/stats api
+     */
     public Map<String, Object> getClusterStatistics() throws IOException {
-        ClusterStatsRequest request = new ClusterStatsRequest.Builder().build();
-        ClusterStatsResponse response = elasticsearchMcpClient.cluster().stats(request);
+        ClusterStatsResponse response = elasticsearchMcpClient.cluster().stats();
         Map<String, Object> result = new HashMap<>();
 
         // 클러스터 정보
