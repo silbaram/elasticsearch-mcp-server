@@ -43,6 +43,7 @@
     <!-- 로그 레벨 설정 -->
     <logger name="org.springframework" level="INFO" />
     <logger name="com.silbaram.github.mcp.server" level="DEBUG" />
+    <logger name="com.silbaram.github.infrastructures.elasticsearch" level="DEBUG" />
 
     <!-- 정의 되지 않은 logger 들에게 일괄 적용됨 -->
     <root level="INFO">
