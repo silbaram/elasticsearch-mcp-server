@@ -17,15 +17,15 @@ public class MappingsToolsService {
     }
 
     @Tool(
-        name = "get_mappings",
+        name = "get_cat_mappings",
         description = "Get field mappings for a specific Elasticsearch index"
     )
-    public String getMappings(
+    public String getCatMappings(
         @ToolParam(description = "Name of the Elasticsearch index to get mappings for")
         String index
     ) {
         try {
-            return elasticsearchMappingsProvider.getMappings(index);
+            return elasticsearchMappingsProvider.getCatMappings(index);
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }

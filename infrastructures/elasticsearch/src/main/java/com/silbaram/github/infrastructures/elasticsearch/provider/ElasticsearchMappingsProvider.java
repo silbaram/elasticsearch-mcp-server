@@ -23,7 +23,7 @@ public class ElasticsearchMappingsProvider {
     /**
      * elasticsearch /_cat/indices api
      */
-    public String getMappings(String index) throws IOException {
+    public String getCatMappings(String index) throws IOException {
         GetMappingResponse mappingResponse = elasticsearchMcpClient.indices()
             .getMapping(request -> request.index(index));
         IndexMappingRecord record = mappingResponse.result().get(index);

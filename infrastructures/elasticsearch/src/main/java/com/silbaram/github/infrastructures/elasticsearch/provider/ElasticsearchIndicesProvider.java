@@ -25,14 +25,11 @@ public class ElasticsearchIndicesProvider {
     /**
      * elasticsearch _cat/indices api
      */
-    public List<Map<String, Object>> getIndices() throws IOException {
-        // 1) CatClient 획득
-        ElasticsearchCatClient elasticsearchCatClient = elasticsearchMcpClient.cat();
+    public List<Map<String, Object>> getCatIndices() throws IOException {
+        // API 호출
+        IndicesResponse indicesResponse = elasticsearchMcpClient.cat().indices();
 
-        // 2) API 호출
-        IndicesResponse indicesResponse = elasticsearchCatClient.indices();
-
-        // 3) 결과 변환
+        // 결과 변환
         List<Map<String, Object>> result = new ArrayList<>();
         for (IndicesRecord indicesRecord : indicesResponse.valueBody()) {
             Map<String, Object> index = new HashMap<>();
@@ -52,19 +49,16 @@ public class ElasticsearchIndicesProvider {
     /**
      * elasticsearch _cat/indices/{index} api
      */
-    public List<Map<String, Object>> getIndicesByName(String indexName) throws IOException {
-        // 1) CatClient 획득
-        ElasticsearchCatClient elasticsearchCatClient = elasticsearchMcpClient.cat();
-
-        // 2) JSON 포맷 요청
+    public List<Map<String, Object>> getCatIndicesByName(String indexName) throws IOException {
+        // JSON 포맷 요청
         IndicesRequest request = new IndicesRequest.Builder()
                 .index(indexName)
                 .build();
 
-        // 3) API 호출
-        IndicesResponse indicesResponse = elasticsearchCatClient.indices(request);
+        // API 호출
+        IndicesResponse indicesResponse = elasticsearchMcpClient.cat().indices(request);
 
-        // 4) 결과 변환
+        // 결과 변환
         List<Map<String, Object>> result = new ArrayList<>();
         for (IndicesRecord indicesRecord : indicesResponse.valueBody()) {
             Map<String, Object> index = new HashMap<>();
