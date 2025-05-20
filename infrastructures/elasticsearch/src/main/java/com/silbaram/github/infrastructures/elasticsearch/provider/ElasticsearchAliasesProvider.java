@@ -22,7 +22,7 @@ public class ElasticsearchAliasesProvider {
     }
 
     /**
-     * /_cat/aliases
+     * elasticsearch: /_cat/aliases API
      */
     public List<Map<String, Object>> getCatAliases() throws IOException {
         // API 호출
@@ -51,7 +51,7 @@ public class ElasticsearchAliasesProvider {
     }
 
     /**
-     * /_cat/aliases/{name}
+     * elasticsearch: /_cat/aliases/{name} API
      */
     public List<Map<String, Object>> getCatAliasesByName(String aliasName) throws IOException {
         // Aliases 요청 생성

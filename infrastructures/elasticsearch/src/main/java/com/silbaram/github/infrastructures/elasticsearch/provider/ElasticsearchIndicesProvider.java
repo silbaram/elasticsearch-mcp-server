@@ -23,7 +23,7 @@ public class ElasticsearchIndicesProvider {
     }
 
     /**
-     * elasticsearch _cat/indices api
+     * elasticsearch: /_cat/indices API
      */
     public List<Map<String, Object>> getCatIndices() throws IOException {
         // API 호출
@@ -47,7 +47,7 @@ public class ElasticsearchIndicesProvider {
     }
 
     /**
-     * elasticsearch _cat/indices/{index} api
+     * elasticsearch: /_cat/indices/{index} API
      */
     public List<Map<String, Object>> getCatIndicesByName(String indexName) throws IOException {
         // JSON 포맷 요청
