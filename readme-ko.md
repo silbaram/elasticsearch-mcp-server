@@ -20,6 +20,10 @@ elasticsearch 공식 Java 클라이언트를 사용하여, 클러스터 헬스�
 - `get_cluster_health` : Elasticsearch cluster 상태 체크.
 - `get_cluster_statistics` : 클러스터 이름, UUID, 상태, 노드 역할, OS 및 JVM 리소스 사용량, 인덱스 수, 샤드 메트릭을 포함한 포괄적인 클러스터 통계 가져오기.
 - `get_mappings` : 특정 Elasticsearch 인덱스에 대한 필드 매핑 가져오기.
+- `get_cat_indices`: Elasticsearch의 모든 인덱스 목록 가져오기
+- `get_cat_indices_by_name`: 지정된 인덱스 이름 또는 와일드카드 패턴과 일치하는 인덱스 목록을 가져옵니다.
+- `get_cat_aliases`: Elasticsearch의 모든 별칭 목록을 가져옵니다.
+- `get_cat_aliases_by_name`: 지정된 별칭 이름 또는 와일드카드 패턴과 일치하는 별칭만 가져옵니다.
 
 ## 기술 스택
 

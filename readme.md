@@ -18,6 +18,10 @@ Elasticsearch MCP Server is a server application developed based on Spring AI MC
 - `get_cluster_health`: Check the health status of the Elasticsearch cluster
 - `get_cluster_statistics`: Returns comprehensive cluster statistics including cluster name, UUID, health status, node roles, OS and JVM resource usage, index counts, and shard metrics.
 - `get_mappings`: Retrieve field mappings for a specific Elasticsearch index
+- `get_cat_indices`: Get a list of all indices in Elasticsearch
+- `get_cat_indices_by_name`: Get a list of indices matching the specified index name or wildcard pattern
+- `get_cat_aliases`: Get a list of all aliases Elasticsearch.
+- `get_cat_aliases_by_name`: Get only the aliases matching the specified alias name or wildcard pattern
 
 ## Tech Stack
 

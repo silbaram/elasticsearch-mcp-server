@@ -32,7 +32,7 @@ public class AliasesToolsService {
 
     @Tool(
         name = "get_cat_aliases_by_name",
-        description = "Fetches only the aliases matching the specified alias name or wildcard pattern."
+        description = "Get only the aliases matching the specified alias name or wildcard pattern."
     )
     public List<Map<String, Object>> getCatAliasesByName(
         @ToolParam(description = "Alias name or wildcard pattern to filter")
