@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Elasticsearch MCP Server is a server application developed based on Spring AI MCP. It allows you to easily define various data processing workflows via the Model Context Protocol (MCP) and efficiently index and search the results in an Elasticsearch cluster. By using this server, you can leverage the following features:
+Elasticsearch MCP(model context protocol) Server is a server application developed based on Spring AI MCP. It allows you to easily define various data processing workflows via the Model Context Protocol (MCP) and efficiently index and search the results in an Elasticsearch cluster. By using this server, you can leverage the following features:
 
 ### Key Features
 
