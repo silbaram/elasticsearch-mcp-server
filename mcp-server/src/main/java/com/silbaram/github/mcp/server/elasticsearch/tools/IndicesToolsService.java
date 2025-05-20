@@ -19,27 +19,27 @@ public class IndicesToolsService {
     }
 
     @Tool(
-        name = "get_indices",
+        name = "get_cat_indices",
         description = "Get a list of all indices in Elasticsearch."
     )
-    public List<Map<String, Object>> getIndices() {
+    public List<Map<String, Object>> getCatIndices() {
         try {
-            return elasticsearchIndicesProvider.getIndices();
+            return elasticsearchIndicesProvider.getCatIndices();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
     @Tool(
-        name = "get_indices_by_name",
+        name = "get_cat_indices_by_name",
         description = "Get a list of indices matching the specified index name or pattern."
     )
-    public List<Map<String, Object>> getIndicesByName(
+    public List<Map<String, Object>> getCatIndicesByName(
         @ToolParam(description = "Index name or pattern to filter indices by")
         String indexName
     ) {
         try {
-            return elasticsearchIndicesProvider.getIndicesByName(indexName);
+            return elasticsearchIndicesProvider.getCatIndicesByName(indexName);
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
