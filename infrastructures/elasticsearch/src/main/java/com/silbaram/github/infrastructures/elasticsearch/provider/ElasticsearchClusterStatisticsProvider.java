@@ -21,7 +21,7 @@ public class ElasticsearchClusterStatisticsProvider {
     }
 
     /**
-     * elasticsearch _cluster/stats api
+     * elasticsearch: /_cluster/stats API
      */
     public Map<String, Object> getClusterStatistics() throws IOException {
         ClusterStatsResponse response = elasticsearchMcpClient.cluster().stats();
