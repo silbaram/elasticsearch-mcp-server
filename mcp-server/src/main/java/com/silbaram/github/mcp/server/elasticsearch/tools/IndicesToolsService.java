@@ -32,7 +32,7 @@ public class IndicesToolsService {
 
     @Tool(
         name = "get_cat_indices_by_name",
-        description = "Get a list of indices matching the specified index name or pattern."
+        description = "Get a list of indices matching the specified index name or wildcard pattern."
     )
     public List<Map<String, Object>> getCatIndicesByName(
         @ToolParam(description = "Index name or pattern to filter indices by")
