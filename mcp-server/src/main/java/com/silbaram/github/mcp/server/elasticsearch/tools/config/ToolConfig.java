@@ -18,7 +18,8 @@ public class ToolConfig {
         MappingsToolsService mappingsToolsService,
         ClusterStatisticsToolsService clusterStatisticsToolsService,
         IndicesToolsService indicesToolsService,
-        AliasesToolsService aliasesToolsService
+        AliasesToolsService aliasesToolsService,
+        DocumentSearchToolsService documentSearchToolsService
     ) {
 
         List<Object> toolList = new ArrayList<>();
@@ -27,6 +28,7 @@ public class ToolConfig {
         toolList.add(clusterStatisticsToolsService);
         toolList.add(indicesToolsService);
         toolList.add(aliasesToolsService);
+        toolList.add(documentSearchToolsService);
 
         return  MethodToolCallbackProvider.builder().toolObjects(toolList.toArray()).build();
 
