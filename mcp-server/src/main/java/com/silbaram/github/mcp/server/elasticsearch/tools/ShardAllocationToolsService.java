@@ -2,6 +2,7 @@ package com.silbaram.github.mcp.server.elasticsearch.tools;
 
 import com.silbaram.github.infrastructures.elasticsearch.provider.ElasticsearchCatAllocationProvider;
 import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.tool.annotation.ToolProperty;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -40,17 +41,19 @@ public class ShardAllocationToolsService {
     }
 
     /**
-     * Retrieves information about shard allocation for a specific node in the Elasticsearch cluster.
+     * Retrieves shard allocation information for a specific node in the Elasticsearch cluster.
      *
      * @param nodeId The ID of the node.
-     * @return A list of maps, where each map represents shard allocation information for the specified node.
+     * @return A list of maps, where each map represents a shard and its allocation details.
+     * @throws RuntimeException if an IOException occurs during the Elasticsearch API call.
      */
     @Tool(name = "get_shard_allocation_for_node", description = "Returns information about shard allocation for a specific node in the Elasticsearch cluster.")
-    public List<Map<String, Object>> getShardAllocationForNode(String nodeId) {
+    public List<Map<String, Object>> getShardAllocationForNode(
+            @ToolProperty(description = "The ID of the node to get shard allocation for.") String nodeId) { // Added annotation
         try {
             return elasticsearchCatAllocationProvider.getCatAllocation(nodeId);
         } catch (IOException e) {
-            throw new RuntimeException("Error retrieving shard allocation information for node " + nodeId + ": " + e.getMessage(), e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

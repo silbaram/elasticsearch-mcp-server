@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +15,7 @@ import java.util.Map;
 /**
  * Provides methods to retrieve allocation information from Elasticsearch.
  */
+@Component
 public class ElasticsearchCatAllocationProvider {
 
     private final RestClient restClient;
