@@ -2,7 +2,7 @@ package com.silbaram.github.mcp.server.elasticsearch.tools;
 
 import com.silbaram.github.infrastructures.elasticsearch.provider.ElasticsearchCatAllocationProvider;
 import org.springframework.ai.tool.annotation.Tool;
-import org.springframework.ai.tool.annotation.ToolProperty;
+import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class ShardAllocationToolsService {
      */
     @Tool(name = "get_shard_allocation_for_node", description = "Returns information about shard allocation for a specific node in the Elasticsearch cluster.")
     public List<Map<String, Object>> getShardAllocationForNode(
-            @ToolProperty(description = "The ID of the node to get shard allocation for.") String nodeId) { // Added annotation
+            @ToolParam(description = "The ID of the node to get shard allocation for.", required = true) String nodeId) { // Annotation changed
         try {
             return elasticsearchCatAllocationProvider.getCatAllocation(nodeId);
         } catch (IOException e) {
