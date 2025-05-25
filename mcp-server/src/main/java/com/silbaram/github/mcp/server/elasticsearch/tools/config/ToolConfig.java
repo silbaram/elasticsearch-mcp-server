@@ -1,6 +1,7 @@
 package com.silbaram.github.mcp.server.elasticsearch.tools.config;
 
 import com.silbaram.github.mcp.server.elasticsearch.tools.*;
+import com.silbaram.github.mcp.server.elasticsearch.tools.ShardAllocationToolsService;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,8 @@ public class ToolConfig {
         ClusterStatisticsToolsService clusterStatisticsToolsService,
         IndicesToolsService indicesToolsService,
         AliasesToolsService aliasesToolsService,
-        DocumentSearchToolsService documentSearchToolsService
+        DocumentSearchToolsService documentSearchToolsService,
+        ShardAllocationToolsService shardAllocationToolsService
     ) {
 
         List<Object> toolList = new ArrayList<>();
@@ -29,6 +31,7 @@ public class ToolConfig {
         toolList.add(indicesToolsService);
         toolList.add(aliasesToolsService);
         toolList.add(documentSearchToolsService);
+        toolList.add(shardAllocationToolsService);
 
         return  MethodToolCallbackProvider.builder().toolObjects(toolList.toArray()).build();
 
