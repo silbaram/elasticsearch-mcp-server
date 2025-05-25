@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -18,8 +16,6 @@ import java.util.Objects;
 
 @Component
 public class ElasticsearchHealthProvider {
-
-    private static final Logger logger = LoggerFactory.getLogger(ElasticsearchHealthProvider.class);
 
     // RestClient를 사용하므로 HealthRequest는 더 이상 필요하지 않습니다.
     private final RestClient restClient;
@@ -70,8 +66,7 @@ public class ElasticsearchHealthProvider {
 
             // task_max_waiting_in_queue_millis 필드 처리: ES 응답이 숫자이고 -1일 경우 "-"로 표시 (이전 로직과 일관성 유지)
             Object maxTaskWaitTimeMillisObj = jsonResponse.get("task_max_waiting_in_queue_millis");
-            if (maxTaskWaitTimeMillisObj instanceof Number) {
-                Number maxTaskWaitTimeMillisNum = (Number) maxTaskWaitTimeMillisObj;
+            if (maxTaskWaitTimeMillisObj instanceof Number maxTaskWaitTimeMillisNum) {
                 // 숫자일 경우 -1L (long 타입)과 비교하여 ES의 -1 값과 일치하는지 확인합니다.
                 healthData.put("max_task_wait_time", maxTaskWaitTimeMillisNum.longValue() == -1L ? "-" : maxTaskWaitTimeMillisNum.toString());
             } else {
@@ -83,7 +78,6 @@ public class ElasticsearchHealthProvider {
             healthData.put("active_shards_percent", activeShardsPercent == null ? "-" : Objects.toString(activeShardsPercent, "-") + "%");
 
         } catch (IOException e) {
-            logger.error("Error fetching or parsing Elasticsearch cluster health: {}", e.getMessage());
             throw e; // 호출자가 처리하도록 예외를 다시 던집니다.
         }
 
