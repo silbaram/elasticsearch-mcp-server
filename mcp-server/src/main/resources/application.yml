@@ -24,4 +24,4 @@ spring:
         tool-change-notification: false
 
 logging:
-  config: classpath:logback-dev.xml
+  config: classpath:logback-prod.xml
