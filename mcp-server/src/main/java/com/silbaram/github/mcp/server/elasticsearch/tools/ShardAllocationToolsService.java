@@ -53,7 +53,8 @@ public class ShardAllocationToolsService {
         try {
             return elasticsearchCatAllocationProvider.getCatAllocation(nodeId);
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
+            // Updated exception throwing:
+            throw new RuntimeException("Error retrieving shard allocation information for node " + nodeId + ": " + e.getMessage(), e);
         }
     }
 }
