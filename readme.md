@@ -85,6 +85,8 @@ elasticsearch:
     "elasticsearch-server": {
       "command": "java",
       "args": [
+        "-Dusername=ID",
+        "-Dpassword=PASSWORD",
         "-jar",
         "/path/mcp-server.jar"
       ]
@@ -92,3 +94,5 @@ elasticsearch:
   }
 }
 ```
+- Dusername(Options) : Elasticsearch cluster configuration ID
+- Dpassword(Options) : Elasticsearch cluster configuration password

@@ -1,6 +1,8 @@
 elasticsearch:
   version: "8.6.1"
   search:
+    username: ${username:EMPTY}
+    password: ${password:EMPTY}
     hosts:
       - http://localhost:9200
 
@@ -22,4 +24,4 @@ spring:
         tool-change-notification: false
 
 logging:
-  config: classpath:logback-prod.xml
+  config: classpath:logback-dev.xml

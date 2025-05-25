@@ -78,6 +78,8 @@ cd elasticsearch-mcp-server
       "elasticsearch-server": {
         "command": "java",
         "args": [
+          "-Dusername=아이디",
+          "-Dpassword=패스워드",
           "-jar",
           "/경로/mcp-server.jar"
         ]
@@ -85,3 +87,5 @@ cd elasticsearch-mcp-server
     }
   }
   ```
+- Dusername(옵션) : Elasticsearch cluster 설정 아이디
+- Dpassword(옵션) : Elasticsearch cluster 설정 패스워드
