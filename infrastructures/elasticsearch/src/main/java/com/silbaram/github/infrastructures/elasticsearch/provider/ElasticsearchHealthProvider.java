@@ -70,8 +70,7 @@ public class ElasticsearchHealthProvider {
 
             // task_max_waiting_in_queue_millis 필드 처리: ES 응답이 숫자이고 -1일 경우 "-"로 표시 (이전 로직과 일관성 유지)
             Object maxTaskWaitTimeMillisObj = jsonResponse.get("task_max_waiting_in_queue_millis");
-            if (maxTaskWaitTimeMillisObj instanceof Number) {
-                Number maxTaskWaitTimeMillisNum = (Number) maxTaskWaitTimeMillisObj;
+            if (maxTaskWaitTimeMillisObj instanceof Number maxTaskWaitTimeMillisNum) {
                 // 숫자일 경우 -1L (long 타입)과 비교하여 ES의 -1 값과 일치하는지 확인합니다.
                 healthData.put("max_task_wait_time", maxTaskWaitTimeMillisNum.longValue() == -1L ? "-" : maxTaskWaitTimeMillisNum.toString());
             } else {

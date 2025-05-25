@@ -1,6 +1,5 @@
 package com.silbaram.github.infrastructures.elasticsearch.provider;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
@@ -8,17 +7,14 @@ import org.elasticsearch.client.RestClient;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-// Unused imports like SearchRequest, SearchResponse, JacksonJsonpGenerator, etc. will be implicitly removed.
 
 @Component
 public class ElasticsearchSearchProvider {
 
     private final RestClient restClient;
-    private final ObjectMapper objectMapper; // Included for consistency, though not strictly needed if only returning string
 
     public ElasticsearchSearchProvider(RestClient restClient) {
         this.restClient = restClient;
-        this.objectMapper = new ObjectMapper();
     }
 
     /**
