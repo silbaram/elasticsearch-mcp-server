@@ -26,8 +26,8 @@ public class ElasticsearchAliasesProvider {
     }
 
     /**
-     * elasticsearch: /_cat/aliases API
-     * Retrieves all aliases, filters out system aliases (starting with '.').
+     * Elasticsearch: /_cat/aliases API
+     * 모든 별칭 정보를 조회하며, '.'으로 시작하는 시스템 별칭은 제외합니다.
      */
     public List<Map<String, Object>> getCatAliases() throws IOException {
         Request request = new Request("GET", "/_cat/aliases?format=json");
@@ -39,8 +39,8 @@ public class ElasticsearchAliasesProvider {
     }
 
     /**
-     * elasticsearch: /_cat/aliases/{name} API
-     * Retrieves aliases matching the given name or pattern, filters out system aliases.
+     * Elasticsearch: /_cat/aliases/{name} API
+     * 지정된 이름 또는 패턴과 일치하는 별칭 정보를 조회하며, 시스템 별칭은 제외합니다.
      */
     public List<Map<String, Object>> getCatAliasesByName(String aliasName) throws IOException {
         Request request = new Request("GET", "/_cat/aliases/" + aliasName + "?format=json");
