@@ -6,10 +6,6 @@ Elasticsearch Model Context Protocol(MCP) Server는 Spring AI MCP 기반으로 �
 MCP을 통해 다양한 데이터 처리 워크플로우를 손쉽게 정의하고, 그 결과를 Elasticsearch 클러스터에 효율적으로 색인·검색할 수 있도록 설계되었습니다.
 이 서버를 이용하면 다음과 같은 기능을 활용할 수 있습니다.
 
-<a href="https://glama.ai/mcp/servers/@elastic/mcp-server-elasticsearch">
-  <img width="380" height="200" src="https://glama.ai/mcp/servers/@elastic/mcp-server-elasticsearch/badge" alt="Elasticsearch Server MCP server" />
-</a>
-
 ### 주요 특징은 다음과 같습니다:
 - MCP 도구(tool) 등록 및 실행
 Spring Boot 환경에서 @Tool 애노테이션으로 정의된 기능을 MCP 서버에 자동 등록하여, 외부 클라이언트(예: Claude, FastMCP CLI)와의 표준 JSON-RPC 기반 통신을 통해 호출할 수 있습니다.
