@@ -22,7 +22,6 @@ public class ElasticsearchHealthProvider {
     private static final Logger logger = LoggerFactory.getLogger(ElasticsearchHealthProvider.class);
 
     // RestClient를 사용하므로 HealthRequest는 더 이상 필요하지 않습니다.
-    // final static HealthRequest healthRequest = new HealthRequest.Builder().build();
     private final RestClient restClient;
     private final ObjectMapper objectMapper = new ObjectMapper(); // JSON 응답 파싱을 위해 사용
 
