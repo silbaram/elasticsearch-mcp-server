@@ -52,10 +52,10 @@ public class ElasticsearchAliasesProvider {
     }
 
     /**
-     * Processes a list of raw alias maps from Elasticsearch,
-     * maps fields to desired names, and filters out system aliases.
-     * @param rawAliases List of alias data from Elasticsearch.
-     * @return Processed list of aliases.
+     * Elasticsearch로부터 받은 원시 별칭 맵 목록을 처리합니다.
+     * 필드를 원하는 이름으로 매핑하고 시스템 별칭을 필터링합니다.
+     * @param rawAliases Elasticsearch의 별칭 데이터 목록입니다.
+     * @return 처리된 별칭 목록입니다.
      */
     private List<Map<String, Object>> processAliases(List<Map<String, Object>> rawAliases) {
         List<Map<String, Object>> result = new ArrayList<>();
