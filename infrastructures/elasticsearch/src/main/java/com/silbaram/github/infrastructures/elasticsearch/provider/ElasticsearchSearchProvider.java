@@ -1,52 +1,38 @@
 package com.silbaram.github.infrastructures.elasticsearch.provider;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.core.SearchRequest;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
-import co.elastic.clients.json.jackson.JacksonJsonpGenerator;
-import co.elastic.clients.json.jackson.JacksonJsonpMapper;
-import com.fasterxml.jackson.core.JsonFactory;
+import org.apache.http.util.EntityUtils;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClient;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.lang.reflect.Type;
-import java.util.Map;
 
 @Component
 public class ElasticsearchSearchProvider {
 
-    private final ElasticsearchClient elasticsearchMcpClient;
+    private final RestClient restClient;
 
-    public ElasticsearchSearchProvider(ElasticsearchClient elasticsearchMcpClient) {
-        this.elasticsearchMcpClient = elasticsearchMcpClient;
+    public ElasticsearchSearchProvider(RestClient restClient) {
+        this.restClient = restClient;
     }
 
     /**
-     * elasticsearch: /{index}/_search API
+     * Elasticsearch: /{index}/_search API
+     * 지정된 인덱스에 대해 JSON 쿼리 본문을 사용하여 검색을 수행하고 결과를 JSON 문자열로 반환합니다.
+     *
+     * @param index 대상 인덱스명
+     * @param queryBody 검색에 사용될 JSON 쿼리 문자열
+     * @return 검색 결과를 담은 JSON 문자열
+     * @throws IOException API 호출 실패 시
      */
     public String searchByIndex(String index, String queryBody) throws IOException {
+        Request request = new Request("POST", "/" + index + "/_search");
+        // 요청 본문에 JSON 문자열 설정
+        request.setJsonEntity(queryBody);
 
-        // SearchRequest에 index와 raw JSON(body)을 그대로 주입
-        SearchRequest searchRequest = SearchRequest.of(request -> request
-            .index(index)
-            .withJson(new StringReader(queryBody))
-        );
-
-        // 검색 실행, 결과를 Map 형태로 받음
-        SearchResponse<Map<String, Object>> response = elasticsearchMcpClient.search(searchRequest, (Type) Map.class);
-
-        StringWriter jsonResult = new StringWriter();
-        try (
-            // Jackson JsonFactory로 JsonGenerator 생성
-            JacksonJsonpGenerator generator = new JacksonJsonpGenerator(new JsonFactory().createGenerator(jsonResult))
-        ) {
-            // searchRequest: JsonpSerializable 객체 (예: SearchRequest)
-            // JacksonJsonpMapper를 함께 넘겨줘야 JSON-P 직렬화가 가능
-            response.serialize(generator, new JacksonJsonpMapper());
-        }
-
-        return jsonResult.toString();
+        Response response = restClient.performRequest(request);
+        // HTTP 응답 본문을 문자열로 변환
+        return EntityUtils.toString(response.getEntity());
     }
 }

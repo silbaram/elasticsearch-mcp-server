@@ -32,10 +32,10 @@ public class ElasticsearchCatAllocationProvider {
     }
 
     /**
-     * Retrieves the cat allocation information from Elasticsearch.
+     * Elasticsearch의 cat allocation 정보를 조회합니다.
      *
-     * @return A list of maps, where each map represents a node's allocation information.
-     * @throws IOException If the API call fails.
+     * @return 각 노드의 할당 정보를 나타내는 Map의 List입니다.
+     * @throws IOException API 호출에 실패한 경우 발생합니다.
      */
     public List<Map<String, Object>> getCatAllocation() throws IOException {
         Request request = new Request("GET", "/_cat/allocation?format=json");
@@ -46,11 +46,11 @@ public class ElasticsearchCatAllocationProvider {
     }
 
     /**
-     * Retrieves the cat allocation information for a specific node from Elasticsearch.
+     * Elasticsearch에서 특정 노드의 cat allocation 정보를 조회합니다.
      *
-     * @param nodeId The ID of the node.
-     * @return A list of maps, where each map represents the node's allocation information.
-     * @throws IOException If the API call fails or if the nodeId is invalid.
+     * @param nodeId 노드 ID입니다.
+     * @return 해당 노드의 할당 정보를 나타내는 Map의 List입니다.
+     * @throws IOException API 호출에 실패하거나 nodeId가 유효하지 않은 경우 발생합니다.
      */
     public List<Map<String, Object>> getCatAllocation(String nodeId) throws IOException {
         Request request = new Request("GET", "/_cat/allocation/" + nodeId + "?format=json");

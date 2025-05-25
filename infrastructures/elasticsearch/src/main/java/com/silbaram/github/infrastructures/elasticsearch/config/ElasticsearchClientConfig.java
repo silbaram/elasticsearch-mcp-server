@@ -24,18 +24,6 @@ public class ElasticsearchClientConfig {
     @Bean
     public RestClient restClient() {
         //todo username, password가 있을때 코드 추그해야됨
-//        // Set up credentials provider with username and password
-//        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-//        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(props.getUsername(), props.getPassword()));
-//
-//        HttpHost[] httpHosts = props.getHosts().stream()
-//            .map(HttpHost::create)
-//            .toArray(HttpHost[]::new);
-
-//        return RestClient.builder(httpHosts)
-//            .setHttpClientConfigCallback(httpClientBuilder ->
-//                httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider))
-//            .build();
         HttpHost[] httpHosts = props.getHosts().stream()
                 .map(HttpHost::create)
                 .toArray(HttpHost[]::new);

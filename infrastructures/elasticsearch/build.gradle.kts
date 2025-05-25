@@ -26,4 +26,16 @@ dependencies {
     // Elasticsearch Java API Client
     implementation("co.elastic.clients:elasticsearch-java:$elasticsearchVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind")
+
+    // Test dependencies
+    testImplementation("org.junit.platform:junit-platform-commons:1.10.0") // Align JUnit Platform Commons version
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testImplementation("org.mockito:mockito-core:5.5.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.5.0")
+}
+
+// Configure the test task to use JUnit Platform
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

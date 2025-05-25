@@ -36,7 +36,6 @@ public class ShardAllocationToolsServiceTest {
      */
     @BeforeEach
     void setUp() {
-        // MockitoAnnotations.openMocks(this) is handled by @ExtendWith(MockitoExtension.class)
         sampleAllocationData = new ArrayList<>();
         Map<String, Object> node1Data = new HashMap<>();
         node1Data.put("node", "nodeA");
