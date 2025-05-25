@@ -1,7 +1,7 @@
 package com.silbaram.github.infrastructures.elasticsearch.provider;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.cluster.ClusterOperations;
+import co.elastic.clients.elasticsearch.cluster.ClusterClient; // 수정된 임포트
 import co.elastic.clients.elasticsearch.cluster.HealthRequest;
 import co.elastic.clients.elasticsearch.cluster.HealthResponse;
 // import co.elastic.clients.elasticsearch.core.CatOperations; // _cat 작업에 직접 필요한 경우 사용
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 class ElasticsearchHealthProviderTest {
 
     private ElasticsearchClient mockClient;
-    private ClusterOperations mockClusterOps;
+    private ClusterClient mockClusterOps; // 타입 변경됨
     private HealthResponse mockHealthResponse;
     private ElasticsearchHealthProvider healthProvider;
     private co.elastic.clients.elasticsearch.cluster.ElasticsearchStatus mockStatus; // 이름 충돌을 피하기 위해 변경
@@ -32,8 +32,8 @@ class ElasticsearchHealthProviderTest {
         // 핵심 ElasticsearchClient 모의 객체 생성
         mockClient = Mockito.mock(ElasticsearchClient.class);
 
-        // ClusterOperations 모의 객체 생성
-        mockClusterOps = Mockito.mock(ClusterOperations.class);
+        // ClusterClient 모의 객체 생성 (이전 ClusterOperations)
+        mockClusterOps = Mockito.mock(ClusterClient.class); // 클래스명 변경됨
 
         // HealthResponse 모의 객체 생성
         mockHealthResponse = Mockito.mock(HealthResponse.class);
@@ -43,8 +43,9 @@ class ElasticsearchHealthProviderTest {
         mockStatus = Mockito.mock(co.elastic.clients.elasticsearch.cluster.ElasticsearchStatus.class);
 
         // 모의 객체에 대한 기본 동작 정의
-        when(mockClient.cluster()).thenReturn(mockClusterOps);
+        when(mockClient.cluster()).thenReturn(mockClusterOps); // mockClient.cluster()는 ClusterClient를 반환하므로 호환됨
         try {
+            // mockClusterOps는 이제 ClusterClient 타입이며, health 메소드를 가지고 있음
             when(mockClusterOps.health(any(HealthRequest.class))).thenReturn(mockHealthResponse);
         } catch (IOException e) {
             // 모의 객체를 사용하는 테스트에서는 발생하지 않아야 하지만, 시그니처 때문에 try-catch 필요
