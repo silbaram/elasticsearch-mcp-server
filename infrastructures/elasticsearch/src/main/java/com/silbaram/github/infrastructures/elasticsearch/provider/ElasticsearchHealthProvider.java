@@ -43,7 +43,6 @@ public class ElasticsearchHealthProvider {
                     responseBody.append(line);
                 }
             }
-            logger.info("Elasticsearch Cluster Health Response: {}", responseBody.toString());
 
             // JSON 응답 파싱
             // objectMapper.readValue가 제네릭 Map을 반환하므로 타입 안정성을 위해 @SuppressWarnings 사용
