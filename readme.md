@@ -23,6 +23,8 @@ Elasticsearch Model Context Protocol(MCP) Server is a server application develop
 - `get_cat_aliases`: Get a list of all aliases Elasticsearch.
 - `get_cat_aliases_by_name`: Get only the aliases matching the specified alias name or wildcard pattern.
 - `get_document_search_by_index`: Searching for documents in Elasticsearch indices using AI-generated queryDsl.
+- `get_shard_allocation`: Returns information about shard allocation in the Elasticsearch cluster.
+- `get_shard_allocation_for_node`: Returns information about shard allocation for a specific node in the Elasticsearch cluster.
 
 ## Tech Stack
 

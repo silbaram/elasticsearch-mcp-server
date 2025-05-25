@@ -31,7 +31,10 @@ public class ShardAllocationToolsService {
      *
      * @return A list of maps, where each map represents shard allocation information.
      */
-    @Tool(name = "get_shard_allocation", description = "Returns information about shard allocation in the Elasticsearch cluster.")
+    @Tool(
+        name = "get_shard_allocation",
+        description = "Returns information about shard allocation in the Elasticsearch cluster."
+    )
     public List<Map<String, Object>> getShardAllocation() {
         try {
             return elasticsearchCatAllocationProvider.getCatAllocation();
@@ -47,9 +50,12 @@ public class ShardAllocationToolsService {
      * @return A list of maps, where each map represents a shard and its allocation details.
      * @throws RuntimeException if an IOException occurs during the Elasticsearch API call.
      */
-    @Tool(name = "get_shard_allocation_for_node", description = "Returns information about shard allocation for a specific node in the Elasticsearch cluster.")
+    @Tool(
+        name = "get_shard_allocation_for_node",
+        description = "Returns information about shard allocation for a specific node in the Elasticsearch cluster."
+    )
     public List<Map<String, Object>> getShardAllocationForNode(
-            @ToolParam(description = "The ID of the node to get shard allocation for.", required = true) String nodeId) { // Annotation changed
+            @ToolParam(description = "The ID of the node to get shard allocation for.") String nodeId) { // Annotation changed
         try {
             return elasticsearchCatAllocationProvider.getCatAllocation(nodeId);
         } catch (IOException e) {

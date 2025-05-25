@@ -24,6 +24,8 @@ elasticsearch 공식 Java 클라이언트를 사용하여, 클러스터 헬스�
 - `get_cat_aliases`: Elasticsearch의 모든 별칭 목록을 가져옵니다.
 - `get_cat_aliases_by_name`: 지정된 별칭 이름 또는 와일드카드 패턴과 일치하는 별칭만 가져옵니다.
 - `get_document_search_by_index`: AI가 생성한 queryDsl를 사용하여 Elasticsearch 인덱스에서 문서 검색
+- `get_shard_allocation`: Elasticsearch 클러스터의 샤드 할당에 대한 정보를 반환합니다.
+- `get_shard_allocation_for_node`: Elasticsearch 클러스터의 특정 노드에 대한 샤드 할당에 대한 정보를 반환합니다.
 
 ## 기술 스택
 
