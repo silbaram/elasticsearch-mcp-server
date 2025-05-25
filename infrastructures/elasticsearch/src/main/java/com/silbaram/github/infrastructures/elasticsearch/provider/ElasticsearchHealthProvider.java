@@ -30,8 +30,6 @@ public class ElasticsearchHealthProvider {
         HealthResponse response = elasticsearchMcpClient.cluster().health(healthRequest);
         Map<String, String> healthData = new HashMap<>();
 
-        // --- /_cat/health 문서의 필드들 ---
-
         // epoch 및 timestamp는 _cat/health와 동일한 형식으로 HealthResponse에서 직접 사용할 수 없습니다.
         // _cat/health는 이를 제공하지만 HealthResponse는 구조화된 데이터에 중점을 둡니다.
         // 플레이스홀더나 기본값을 사용합니다.
