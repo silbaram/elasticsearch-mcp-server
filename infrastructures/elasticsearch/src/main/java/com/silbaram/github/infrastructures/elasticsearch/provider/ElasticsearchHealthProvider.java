@@ -1,13 +1,17 @@
 package com.silbaram.github.infrastructures.elasticsearch.provider;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.cluster.HealthRequest;
-import co.elastic.clients.elasticsearch.cluster.HealthResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -17,64 +21,73 @@ public class ElasticsearchHealthProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticsearchHealthProvider.class);
 
-    // HealthRequest는 특정 매개변수가 필요하지 않은 경우 static final 필드로 유지할 수 있습니다.
-    final static HealthRequest healthRequest = new HealthRequest.Builder().build();
-    private final ElasticsearchClient elasticsearchMcpClient;
+    // RestClient를 사용하므로 HealthRequest는 더 이상 필요하지 않습니다.
+    // final static HealthRequest healthRequest = new HealthRequest.Builder().build();
+    private final RestClient restClient;
+    private final ObjectMapper objectMapper = new ObjectMapper(); // JSON 응답 파싱을 위해 사용
 
-    public ElasticsearchHealthProvider(ElasticsearchClient elasticsearchMcpClient) {
-        this.elasticsearchMcpClient = elasticsearchMcpClient;
+    public ElasticsearchHealthProvider(RestClient restClient) {
+        this.restClient = restClient;
     }
 
     public Map<String, String> getClusterHealth() throws IOException {
-        // 클러스터 상태 정보 가져오기
-        HealthResponse response = elasticsearchMcpClient.cluster().health(healthRequest);
         Map<String, String> healthData = new HashMap<>();
+        Request request = new Request("GET", "/_cluster/health");
 
-        // epoch 및 timestamp는 _cat/health와 동일한 형식으로 HealthResponse에서 직접 사용할 수 없습니다.
-        // _cat/health는 이를 제공하지만 HealthResponse는 구조화된 데이터에 중점을 둡니다.
-        // 플레이스홀더나 기본값을 사용합니다.
-        healthData.put("epoch", "-"); // 플레이스홀더, HealthResponse가 epoch 초를 직접 제공하지 않음.
-        healthData.put("timestamp", "-"); // 플레이스홀더, HealthResponse가 HH:MM:SS 타임스탬프를 직접 제공하지 않음.
+        try {
+            Response response = restClient.performRequest(request);
+            // 응답 본문 읽기
+            StringBuilder responseBody = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseBody.append(line);
+                }
+            }
+            logger.info("Elasticsearch Cluster Health Response: {}", responseBody.toString());
 
-        healthData.put("cluster", Objects.toString(response.clusterName(), "-"));
-        healthData.put("status", Objects.toString(response.status().jsonValue(), "-"));
+            // JSON 응답 파싱
+            // objectMapper.readValue가 제네릭 Map을 반환하므로 타입 안정성을 위해 @SuppressWarnings 사용
+            @SuppressWarnings("unchecked") 
+            Map<String, Object> jsonResponse = objectMapper.readValue(responseBody.toString(), Map.class);
 
-        // 노드 정보
-        // _cat/health의 node.total은 HealthResponse의 numberOfNodes에 해당합니다.
-        healthData.put("node.total", Objects.toString(response.numberOfNodes(), "-"));
-        // _cat/health의 node.data는 HealthResponse의 numberOfDataNodes에 해당합니다.
-        healthData.put("node.data", Objects.toString(response.numberOfDataNodes(), "-"));
+            // 파싱된 JSON으로부터 healthData 채우기
+            // 참고: _cluster/health API는 epoch 및 timestamp를 _cat/health와 다른 방식으로 제공합니다.
+            // 이전 구현의 플레이스홀더와 일관되게 "-"로 유지합니다.
+            healthData.put("epoch", "-");
+            healthData.put("timestamp", "-");
 
-        // 샤드 정보
-        // _cat/health의 shards (총 샤드 수)는 activeShards + initializingShards + unassignedShards + relocatingShards에 해당합니다.
-        // 그러나 HealthResponse는 이러한 구성 요소를 별도로 제공합니다.
-        // activeShards()는 활성 샤드를 고려할 때 "shards"에 가장 직접적으로 해당하는 것으로 보입니다.
-        // 또는 이를 합산하거나 activeShards를 기본 표현으로 사용합니다.
-        // HealthResponse로부터의 단순성과 직접적인 매핑을 위해 "shards"에는 activeShards 수를 사용합니다.
-        // _cat/health 출력 예제에는 단일 샤드 클러스터에 대해 "shards": "1", "pri": "1"이 있습니다.
-        // "shards"에는 activeShards를, "pri"에는 activePrimaryShards를 사용합니다.
-        healthData.put("shards", Objects.toString(response.activeShards(), "-"));
-        healthData.put("pri", Objects.toString(response.activePrimaryShards(), "-"));
+            healthData.put("cluster", Objects.toString(jsonResponse.get("cluster_name"), "-"));
+            healthData.put("status", Objects.toString(jsonResponse.get("status"), "-"));
+            healthData.put("node.total", Objects.toString(jsonResponse.get("number_of_nodes"), "-"));
+            healthData.put("node.data", Objects.toString(jsonResponse.get("number_of_data_nodes"), "-"));
+            healthData.put("shards", Objects.toString(jsonResponse.get("active_shards"), "-"));
+            healthData.put("pri", Objects.toString(jsonResponse.get("active_primary_shards"), "-"));
+            healthData.put("relo", Objects.toString(jsonResponse.get("relocating_shards"), "-"));
+            healthData.put("init", Objects.toString(jsonResponse.get("initializing_shards"), "-"));
+            healthData.put("unassign", Objects.toString(jsonResponse.get("unassigned_shards"), "-"));
+            // "unassign.pri"는 원래 로직에 따라 "unassign"과 동일한 값을 사용합니다.
+            healthData.put("unassign.pri", Objects.toString(jsonResponse.get("unassigned_shards"), "-"));
+            healthData.put("pending_tasks", Objects.toString(jsonResponse.get("number_of_pending_tasks"), "-"));
 
-        healthData.put("relo", Objects.toString(response.relocatingShards(), "-"));
-        healthData.put("init", Objects.toString(response.initializingShards(), "-"));
+            // task_max_waiting_in_queue_millis 필드 처리: ES 응답이 숫자이고 -1일 경우 "-"로 표시 (이전 로직과 일관성 유지)
+            Object maxTaskWaitTimeMillisObj = jsonResponse.get("task_max_waiting_in_queue_millis");
+            if (maxTaskWaitTimeMillisObj instanceof Number) {
+                Number maxTaskWaitTimeMillisNum = (Number) maxTaskWaitTimeMillisObj;
+                // 숫자일 경우 -1L (long 타입)과 비교하여 ES의 -1 값과 일치하는지 확인합니다.
+                healthData.put("max_task_wait_time", maxTaskWaitTimeMillisNum.longValue() == -1L ? "-" : maxTaskWaitTimeMillisNum.toString());
+            } else {
+                healthData.put("max_task_wait_time", "-"); // null이거나 숫자가 아닌 경우 기본값 "-"
+            }
+            
+            // active_shards_percent_as_number 필드 처리: 값 뒤에 "%" 추가
+            Object activeShardsPercent = jsonResponse.get("active_shards_percent_as_number");
+            healthData.put("active_shards_percent", activeShardsPercent == null ? "-" : Objects.toString(activeShardsPercent, "-") + "%");
 
-        // _cat/health의 unassign 필드는 총 할당되지 않은 샤드 수입니다.
-        healthData.put("unassign", Objects.toString(response.unassignedShards(), "-"));
-        // unassign.pri는 직접 사용할 수 없습니다. HealthResponse.unassignedShards()는 총계입니다.
-        // "unassign"에는 unassignedShards를 사용하고, "unassign.pri"에는 주석과 함께 플레이스홀더나 동일한 값을 넣습니다.
-        // 현재로서는 최선의 노력으로 unassign.pri에 대해 총 할당되지 않은 샤드를 사용합니다.
-        // 기본 샤드별 할당되지 않은 수가 필요한 경우 더 정확한 접근 방식에는 다른 API 호출이나 복잡한 계산이 필요합니다.
-        healthData.put("unassign.pri", Objects.toString(response.unassignedShards(), "-")); // 이것은 기본 샤드뿐만 아니라 총 할당되지 않은 샤드 수입니다.
-
-        healthData.put("pending_tasks", Objects.toString(response.numberOfPendingTasks(), "-"));
-
-        // max_task_wait_time: HealthResponse에는 taskMaxWaitingInQueueMillis가 있습니다.
-        // _cat/health API는 이를 시간 문자열(예: "1.2m", "-")로 표시합니다.
-        // 밀리초 값을 문자열로 저장합니다.
-        healthData.put("max_task_wait_time", response.taskMaxWaitingInQueueMillis() == -1 ? "-" : Objects.toString(response.taskMaxWaitingInQueueMillis(), "-"));
-        
-        healthData.put("active_shards_percent", Objects.toString(response.activeShardsPercentAsNumber(), "-") + "%");
+        } catch (IOException e) {
+            logger.error("Error fetching or parsing Elasticsearch cluster health: {}", e.getMessage());
+            throw e; // 호출자가 처리하도록 예외를 다시 던집니다.
+        }
 
         return healthData;
     }
